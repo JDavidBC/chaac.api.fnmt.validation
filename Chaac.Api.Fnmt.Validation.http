@@ -1,0 +1,10 @@
+@Chaac.Api.Fnmt.Validation_HostAddress = https://localhost:443
+
+# POST /login – present a client certificate via IIS; IIS forwards it to ASP.NET Core.
+# This request is only meaningful when running behind IIS with SSL and client certificate
+# negotiation configured (see docs/IIS-Deployment.md).
+POST {{Chaac.Api.Fnmt.Validation_HostAddress}}/login
+Accept: application/json
+
+###
+
