@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Chaac.Api.Fnmt.Validation/Chaac.Api.Fnmt.Validation.csproj" />
+  </Folder>
+</Solution>
