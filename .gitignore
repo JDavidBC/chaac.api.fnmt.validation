@@ -480,3 +480,4 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/src/Chaac.Api.Fnmt.Validation/appsettings.json
