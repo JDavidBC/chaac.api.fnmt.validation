@@ -1,6 +1,15 @@
 # chaac.api.fnmt.validation
 
-ASP.NET Core Web API (.NET 10) for authenticating Spanish citizens using FNMT (Fábrica Nacional de Moneda y Timbre) client certificates and issuing JWT tokens. Designed for IIS deployment on Windows Server 2019.
+ASP.NET Core Web API (.NET 10) for authenticating Spanish citizens using FNMT (Fábrica Nacional de Moneda y Timbre) client certificates and issuing JWT tokens. Designed for deployment on Windows Server 2019.
+Use Nginx as webserver.
+
+### Requirements
+ Root Certificates from FNMT-RCM 
+ Intermediate User Certificate from FNMT-RCM.
+
+ SSL Certificates (Key and crt)
+
+ 
 
 ## Project Structure
 
