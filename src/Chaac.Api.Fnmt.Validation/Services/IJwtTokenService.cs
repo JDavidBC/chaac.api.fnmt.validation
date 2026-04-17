@@ -7,10 +7,6 @@ namespace Chaac.Api.Fnmt.Validation.Services;
 /// </summary>
 public interface IJwtTokenService
 {
-    /// <summary>
-    /// Generates a signed JWT bearer token for the supplied certificate identity.
-    /// </summary>
-    /// <param name="identity">Identity information extracted from a validated certificate.</param>
-    /// <returns>A <see cref="LoginResponse"/> containing the token and basic user info.</returns>
-    LoginResponse GenerateToken(CertificateIdentity identity);
+    // Genera el token basado en nuestra nueva estructura de identidad
+    LoginResponse GenerateToken(CertificateIdentity identity, string ip, string ciudad, string pais);
 }

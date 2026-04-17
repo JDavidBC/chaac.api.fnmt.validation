@@ -20,8 +20,7 @@ public sealed class JwtTokenService : IJwtTokenService
         _settings = settings.Value;
     }
 
-    /// <inheritdoc/>
-    public LoginResponse GenerateToken(CertificateIdentity identity)
+    public LoginResponse GenerateToken(CertificateIdentity identity, string ip, string ciudad, string pais)
     {
         ArgumentNullException.ThrowIfNull(identity);
 
@@ -32,21 +31,22 @@ public sealed class JwtTokenService : IJwtTokenService
         var issuedAt = DateTime.UtcNow;
         var expires = issuedAt.AddMinutes(_settings.ExpirationMinutes);
 
+        // MANTENEMOS TODO LO ANTERIOR Y AÑADIMOS LA GEO AL FINAL
         var claims = new List<Claim>
-        {
-            // Standard JWT claims
-            new(JwtRegisteredClaimNames.Sub, identity.DniNie),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Iat,
-                new DateTimeOffset(issuedAt).ToUnixTimeSeconds().ToString(),
-                ClaimValueTypes.Integer64),
-
-            // Application-specific claims
-            new("dni_nie", identity.DniNie),
-            new("common_name", identity.CommonName),
-            new("cert_serial", identity.SerialNumber),
-            new("cert_issuer", identity.Issuer),
-        };
+    {
+        new(JwtRegisteredClaimNames.Sub, identity.Dni),
+        new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new("dni", identity.Dni),
+        new("nombre", identity.Nombre),
+        new("apellidos", identity.Apellidos),
+        new("nombre_completo", identity.NombreCompleto),
+        new("raw_dn", identity.RawDn), // El que te había quitado por error
+        
+        // --- LOS AÑADIDOS DE AUDITORÍA ---
+        new("user_ip", ip),
+        new("ciudad", ciudad),
+        new("pais", pais)
+    };
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -60,15 +60,14 @@ public sealed class JwtTokenService : IJwtTokenService
 
         var handler = new JwtSecurityTokenHandler();
         var token = handler.CreateToken(tokenDescriptor);
-        var tokenString = handler.WriteToken(token);
 
         return new LoginResponse
         {
-            Token = tokenString,
+            Token = handler.WriteToken(token),
             TokenType = "Bearer",
             ExpiresIn = _settings.ExpirationMinutes * 60,
-            DniNie = identity.DniNie,
-            Name = identity.CommonName,
+            DniNie = identity.Dni,
+            Name = identity.NombreCompleto // Usamos el nombre completo que ya viene parseado
         };
     }
 }
